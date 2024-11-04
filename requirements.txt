@@ -1,0 +1,4 @@
+aiogram==3.14.0
+LOLZTEAM==1.4.5
+requests==2.32.3
+
