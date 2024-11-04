@@ -45,7 +45,7 @@ async def get_link(message: types.Message, state: FSMContext):
     global sent_message_id
     data = await state.get_data()
     sent_message_id = data.get("sent_message_id")
-    matc = re.search(r'([^/]+)/$', link)
+    matc = re.search(r'([^/]+)/?$', link)
     matc1 = re.search(r'members/(\d+)', link)
     global user_n, user_nick, user_tg
     user_nick = message.text
