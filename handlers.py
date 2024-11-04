@@ -1,4 +1,4 @@
-import asyncio
+import config as cfg
 import logging
 import requests
 import re
@@ -7,7 +7,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram import types, F, Router
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.filters import CommandStart, StateFilter
-from config import TOKEN, FTOKEN, ADMIN_IDS, secret
+from config import FTOKEN, ADMIN_IDS, secret
 from LOLZTEAM.API import Forum, Market
 
 logging.basicConfig(level=logging.INFO)
@@ -59,7 +59,7 @@ async def get_link(message: types.Message, state: FSMContext):
             "accept": "application/json",
             "authorization": f"Bearer {FTOKEN}"
             }
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, proxies=cfg.proxies)
         print(response.json()['user']['user_id'])
         try:
             user_nick = response.json()['user']['username']
@@ -216,7 +216,3 @@ async def approve(callback_query: types.CallbackQuery):
 @rt.callback_query(F.data == 'reject_')
 async def reject(callback_query: types.CallbackQuery):
     await callback_query.message.edit_text('Отменено')
-
-
-
-
