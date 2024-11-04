@@ -3,3 +3,6 @@ TOKEN = '' #telegram bot token
 
 FTOKEN = '' #forum token
 secret = '' #lolz secret answer
+
+proxies = {
+}
