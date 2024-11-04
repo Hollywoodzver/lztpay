@@ -1,4 +1,4 @@
-import config as cfg
+import asyncio
 import logging
 import requests
 import re
@@ -7,7 +7,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram import types, F, Router
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.filters import CommandStart, StateFilter
-from config import FTOKEN, ADMIN_IDS, secret
+from config import TOKEN, FTOKEN, ADMIN_IDS, secret
 from LOLZTEAM.API import Forum, Market
 
 logging.basicConfig(level=logging.INFO)
@@ -45,13 +45,13 @@ async def get_link(message: types.Message, state: FSMContext):
     global sent_message_id
     data = await state.get_data()
     sent_message_id = data.get("sent_message_id")
-    matc = re.search(r'([^/]+)/?$', link)
+    matc = re.search(r'([^/]+)/([A-Za-z0-9]+)', link)
     matc1 = re.search(r'members/(\d+)', link)
     global user_n, user_nick, user_tg
     user_nick = message.text
     
     if matc:
-        user_n = matc.group(1)
+        user_n = matc.group(2)
         print(user_n)
         
         url = f"https://api.zelenka.guru/users/{user_n}"
@@ -59,7 +59,7 @@ async def get_link(message: types.Message, state: FSMContext):
             "accept": "application/json",
             "authorization": f"Bearer {FTOKEN}"
             }
-        response = requests.get(url, headers=headers, proxies=cfg.proxies)
+        response = requests.get(url, headers=headers)
         print(response.json()['user']['user_id'])
         try:
             user_nick = response.json()['user']['username']
